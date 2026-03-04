@@ -20,6 +20,6 @@ export async function POST(req: Request, { params }: Params) {
   if (!body.authorUserId || !body.text) {
     return NextResponse.json({ error: "authorUserId and text required" }, { status: 400 });
   }
-  const point = createPoint(weekly.id, { area: body.area ?? "General", ...body });
+  const point = createPoint(weekly.id, { ...body, area: body.area ?? "General" });
   return NextResponse.json(point, { status: 201 });
 }

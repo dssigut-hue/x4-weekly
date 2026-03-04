@@ -1,0 +1,25 @@
+import { NextResponse } from "next/server";
+import { upsertWeekly, listPoints, createPoint } from "@/lib/store";
+import { formatWeekKey } from "@/lib/isoWeek";
+import type { CreatePointPayload } from "@/lib/types";
+
+type Params = { params: { year: string; cw: string } };
+
+export async function GET(_req: Request, { params }: Params) {
+  const year = parseInt(params.year, 10);
+  const cw = parseInt(params.cw, 10);
+  const weekly = upsertWeekly(year, cw);
+  return NextResponse.json(listPoints(weekly.id));
+}
+
+export async function POST(req: Request, { params }: Params) {
+  const year = parseInt(params.year, 10);
+  const cw = parseInt(params.cw, 10);
+  const weekly = upsertWeekly(year, cw);
+  const body = (await req.json()) as CreatePointPayload;
+  if (!body.authorUserId || !body.text) {
+    return NextResponse.json({ error: "authorUserId and text required" }, { status: 400 });
+  }
+  const point = createPoint(weekly.id, { area: body.area ?? "General", ...body });
+  return NextResponse.json(point, { status: 201 });
+}

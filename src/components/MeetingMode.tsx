@@ -263,13 +263,13 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
                   <span className="font-mono text-sm" style={{ color: currentSpeaker.color }}>
                     {currentSpeaker.name}
                   </span>
-                  {timer.state === "running" && (
+                  {timer?.state === "running" && (
                     <span className="w-2 h-2 rounded-full animate-pulse" style={{ background: currentSpeaker.color }} />
                   )}
                 </div>
 
                 <BigTimer
-                  spent={(currentSpeakerTimer?.spentSeconds ?? 0) + (timer.state === "running" ? localElapsed : 0)}
+                  spent={(currentSpeakerTimer?.spentSeconds ?? 0) + (timer?.state === "running" ? localElapsed : 0)}
                   allocated={SPEAKER_ALLOCATED_SECONDS}
                   color={currentSpeaker.color}
                   state={timer.state}
@@ -278,7 +278,7 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
 
               {/* Controls */}
               <div className="flex items-center justify-center gap-3 mb-8">
-                {timer.state === "running" ? (
+                {timer?.state === "running" ? (
                   <button
                     onClick={pauseTimer}
                     className="font-mono text-sm px-6 py-2.5 rounded transition-all hover:opacity-80"

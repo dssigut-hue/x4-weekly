@@ -7,10 +7,10 @@ type Params = { params: { year: string; cw: string } };
 export async function POST(req: Request, { params }: Params) {
   const year = parseInt(params.year, 10);
   const cw = parseInt(params.cw, 10);
-  const weekly = upsertWeekly(year, cw);
+  const weekly = await upsertWeekly(year, cw);
   const body = (await req.json()) as TimerStartPayload;
 
-  const current = getMeetingTimer(weekly.id);
+  const current = await getMeetingTimer(weekly.id);
   if (!current) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   // If someone else is running and force is not set, reject
@@ -25,7 +25,7 @@ export async function POST(req: Request, { params }: Params) {
     );
   }
 
-  const result = updateMeetingTimer(
+  const result = await updateMeetingTimer(
     weekly.id,
     body.expectedVersion,
     (t): Omit<MeetingTimer, "version"> => {

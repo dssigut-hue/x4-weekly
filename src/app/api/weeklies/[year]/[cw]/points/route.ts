@@ -8,18 +8,18 @@ type Params = { params: { year: string; cw: string } };
 export async function GET(_req: Request, { params }: Params) {
   const year = parseInt(params.year, 10);
   const cw = parseInt(params.cw, 10);
-  const weekly = upsertWeekly(year, cw);
-  return NextResponse.json(listPoints(weekly.id));
+  const weekly = await upsertWeekly(year, cw);
+  return NextResponse.json(await listPoints(weekly.id));
 }
 
 export async function POST(req: Request, { params }: Params) {
   const year = parseInt(params.year, 10);
   const cw = parseInt(params.cw, 10);
-  const weekly = upsertWeekly(year, cw);
+  const weekly = await upsertWeekly(year, cw);
   const body = (await req.json()) as CreatePointPayload;
   if (!body.authorUserId || !body.text) {
     return NextResponse.json({ error: "authorUserId and text required" }, { status: 400 });
   }
-  const point = createPoint(weekly.id, { ...body, area: body.area ?? "General" });
+  const point = await createPoint(weekly.id, { ...body, area: body.area ?? "General" });
   return NextResponse.json(point, { status: 201 });
 }

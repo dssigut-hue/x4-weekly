@@ -3,7 +3,7 @@ import { listTasks, createTask } from "@/lib/store";
 import type { CreateTaskPayload } from "@/lib/types";
 
 export async function GET() {
-  return NextResponse.json(listTasks());
+  return NextResponse.json(await listTasks());
 }
 
 export async function POST(req: Request) {
@@ -14,6 +14,6 @@ export async function POST(req: Request) {
       { status: 400 }
     );
   }
-  const task = createTask(body);
+  const task = await createTask(body);
   return NextResponse.json(task, { status: 201 });
 }

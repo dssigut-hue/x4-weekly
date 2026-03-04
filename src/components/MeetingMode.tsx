@@ -67,7 +67,7 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
 
   // Tick handler (controller sends delta to server every 2s)
   useEffect(() => {
-    if (timer?.state !== "running" || timer.controlledByUserId !== myUserId) {
+    if (timer?.state !== "running" || timer?.controlledByUserId !== myUserId) {
       if (tickRef.current) clearInterval(tickRef.current);
       return;
     }
@@ -77,7 +77,7 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
         await fetch(`/api/weeklies/${year}/${cw}/meeting-timer/tick`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ deltaSeconds: 2, expectedVersion: timer.version }),
+          body: JSON.stringify({ deltaSeconds: 2, expectedVersion: timer?.version }),
         });
         await fetchState();
       } catch (e) {
@@ -126,18 +126,18 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
     timerAction("stop", { controlledByUserId: myUserId });
 
   const speakerPoints = timer?.currentSpeakerUserId
-    ? points.filter((p) => p.authorUserId === timer.currentSpeakerUserId)
+    ? points.filter((p) => p.authorUserId === timer?.currentSpeakerUserId)
     : [];
 
   const currentSpeaker = timer?.currentSpeakerUserId
-    ? getMemberById(timer.currentSpeakerUserId)
+    ? getMemberById(timer?.currentSpeakerUserId)
     : null;
 
   const currentSpeakerTimer = timer?.currentSpeakerUserId
-    ? speakers.find((s) => s.userId === timer.currentSpeakerUserId)
+    ? speakers.find((s) => s.userId === timer?.currentSpeakerUserId)
     : null;
 
-  const controller = timer?.controlledByUserId ? getMemberById(timer.controlledByUserId) : null;
+  const controller = timer?.controlledByUserId ? getMemberById(timer?.controlledByUserId) : null;
 
   return (
     <div className="min-h-screen" style={{ background: "var(--ink)", color: "var(--paper)" }}>
@@ -288,7 +288,7 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
                   </button>
                 ) : (
                   <button
-                    onClick={() => startSpeaker(timer.currentSpeakerUserId!)}
+                    onClick={() => startSpeaker(timer?.currentSpeakerUserId!)}
                     className="font-mono text-sm px-6 py-2.5 rounded transition-all hover:opacity-80"
                     style={{ background: currentSpeaker.color, color: "white" }}
                   >

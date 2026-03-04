@@ -272,7 +272,7 @@ export default function MeetingMode({ weeklyId, year, cw, label }: Props) {
                   spent={(currentSpeakerTimer?.spentSeconds ?? 0) + (timer?.state === "running" ? localElapsed : 0)}
                   allocated={SPEAKER_ALLOCATED_SECONDS}
                   color={currentSpeaker.color}
-                  state={timer.state}
+                  state={timer?.state}
                 />
               </div>
 

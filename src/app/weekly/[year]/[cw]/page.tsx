@@ -37,6 +37,7 @@ export default function WeeklyPage({ params }: { params: { year: string; cw: str
 
   const [points, setPoints] = useState<WeeklyPoint[]>([]);
   const [loading, setLoading] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
   const [newTextByUser, setNewTextByUser] = useState<Record<string, string>>({});
 
   // Časovač
@@ -182,7 +183,7 @@ export default function WeeklyPage({ params }: { params: { year: string; cw: str
         </button>
       </div>
 
-      {loading && <div className='text-slate-500'>Načítám...</div>}
+     {loading && points.length === 0 && <div className='text-slate-500'>Načítám...</div>}
 
       <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-7 gap-4'>
         {TEAM.map((m) => {
